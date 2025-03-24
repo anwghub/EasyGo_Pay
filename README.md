@@ -1,2 +1,2 @@
-# Paytm_clone
-A simple mern stack project
+# EasyGo_Pay
+A digital payment wallet web app using mern stack .
