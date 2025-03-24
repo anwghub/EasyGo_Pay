@@ -7,26 +7,41 @@ import TransactionsTable from "./TransactionsTable.jsx";
 import PaymentAnalytics from "./PaymentAnalytics.jsx";
 import PaymentCTA from "./PaymentCTA.jsx";
 import UpcomingPayments from "./UpcomingPayments.jsx";
+import Sidebar from "./Sidebar.jsx";
+
+
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Balance");
   console.log("Active Tab:", activeTab);
-  
+
   return (
-    <div className="h-full">
-      <Header />
+    <div className="h-screen grid grid-cols-[250px,1fr] bg-gray-700 text-white overflow-auto">
+      {/* Sidebar */}
+      <div className="h-full overflow-auto bg-gray-900">
+        <Sidebar />
+      </div>
 
+      {/* Main Content */}
       <div className="px-4 py-6 md:px-6 space-y-6">
+        <Header />
         <h1 className="text-2xl font-bold">Dashboard</h1>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Balance Section */}
             <div className="bg-[#232631] rounded-lg overflow-hidden">
               <div className="flex border-b border-gray-700">
-                <TabButton text="Balance" active={activeTab === "Balance"} onClick={() => setActiveTab("Balance")} />
-                <TabButton text="Withdraw" active={activeTab === "Withdraw"} onClick={() => setActiveTab("Withdraw")} />
+                <TabButton
+                  text="Balance"
+                  active={activeTab === "Balance"}
+                  onClick={() => setActiveTab("Balance")}
+                />
+                <TabButton
+                  text="Withdraw"
+                  active={activeTab === "Withdraw"}
+                  onClick={() => setActiveTab("Withdraw")}
+                />
               </div>
 
               <div className="p-6">
@@ -55,6 +70,8 @@ export default function Dashboard() {
     </div>
   );
 }
+
+
 
 function TabButton({ text, active, onClick }) {
   return (
