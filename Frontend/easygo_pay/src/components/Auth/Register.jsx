@@ -12,7 +12,7 @@ const Register = () => {
     <div className="flex h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       {/* Left Section */}
       <div className="w-1/2 flex flex-col justify-center items-center p-10">
-        <h1 className="text-4xl font-bold">Register for <span className="text-blue-400">EasyGoPay</span></h1>
+        <h1 className="text-3xl font-bold">Register for <span className="text-blue-400">EasyGoPay</span></h1>
         <p className="mt-4 text-gray-400">Already have an account? <Link to="/login" className="text-blue-500 underline">Sign in here!</Link></p>
       </div>
       

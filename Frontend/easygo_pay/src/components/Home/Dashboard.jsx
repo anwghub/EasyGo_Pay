@@ -1,16 +1,17 @@
 import { useState } from "react";
-import Header from "./Header";
-import BalanceCard from "./BalanceCard";
-import QuickTransfer from "./QuickTransfer";
-import DepositSection from "./DepositSection";
-import TransactionsTable from "./TransactionsTable";
-import PaymentAnalytics from "./PaymentAnalytics";
-import PaymentCTA from "./PaymentCTA";
-import UpcomingPayments from "./UpcomingPayments";
+import Header from "./Header.jsx";
+import BalanceCard from "./BalanceCard.jsx";
+import QuickTransfer from "./QuickTransfer.jsx";
+import DepositSection from "./DepositSection.jsx";
+import TransactionsTable from "./TransactionsTable.jsx";
+import PaymentAnalytics from "./PaymentAnalytics.jsx";
+import PaymentCTA from "./PaymentCTA.jsx";
+import UpcomingPayments from "./UpcomingPayments.jsx";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Balance");
-
+  console.log("Active Tab:", activeTab);
+  
   return (
     <div className="h-full">
       <Header />
