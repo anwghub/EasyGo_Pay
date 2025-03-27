@@ -3,6 +3,8 @@ import { connectDB } from "./db/connectDB.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import authRoutes from "./routes/authRoutes.js";
+
 
 dotenv.config();
 
@@ -17,7 +19,7 @@ app.get("/",(req,res)=>{
     res.send("Hello World");
 });
 
-app.use("/api/auth",require("./routes/authRoutes.js"));
+app.use("/api/auth", authRoutes);
 
 app.use(express.json());
 
