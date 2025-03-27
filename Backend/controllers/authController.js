@@ -1,107 +1,153 @@
-import bcrypt from "bcryptjs";
+import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-import User from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+import sendEmail from "../services/emailServices.js";
+import speakeasy from "speakeasy";
+import qrcode from "qrcode";
 
-dotenv.config();
-
-// Generate JWT Token
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "10min" });
+// Generate JWT
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-const registerUser = async(req, res)=>{
-    try{
-        const {name,email,password, role} = req.body;
+// User Registration
+export const register = async (req, res) => {
+  try {
+    const { fullName, email, password } = req.body;
+    let user = await User.findOne({ email });
 
-            //check if the user already exists
-        const userExists = await User.findOne({email});
-        if(userExists){
-            return res.status(400).json({ messsage: "User already exists"});
-        }
+    if (user) return res.status(400).json({ msg: "User already exists" });
 
-        //Create Hash password
-        const hashedPassword = await bcrypt.hash(password,10);
+    user = new User({ fullName, email, password });
+    await user.save();
 
-        //create new user
-        const user = await User.create({
-            name,
-            email,
-            password: hashedPassword,
-            role: role || "user", //default-->user
-        });
+    const token = generateToken(user);
+    const verificationLink = `http://localhost:5000/api/auth/verify/${token}`;
 
-        if(user){
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                password: user.hashedPassword,
-                role:user.role,
-                token: generateToken(user._id),
-            });
-        }else{
-            res.status(401).json({messsage: "Invalid user data"});
-        }
+    await sendEmail(
+      email,
+      "Verify Your Email",
+      `Click to verify: ${verificationLink}`,
+      `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
+    );
 
-    }catch(error){
-        res.status(500).json({messsage: "Server error", error: error.messsage});
-    }
+    res.status(201).json({ msg: "User registered! Please verify your email." });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error" });
+  }
 };
 
-//User login
+// Email Verification
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
 
-const loginUser = async(req, res)=>{
-    try{
-        const {email, password} = req.body;
+    if (!user) return res.status(400).json({ msg: "Invalid token" });
 
-        const user = User.findOne({ email });
-        if(!user){
-            res.status(400).json({messsage: "Invalid email"});
-        }
+    user.isVerified = true;
+    await user.save();
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
-        if(!isPasswordMatch){
-            res.status(401).json({ messsage: "Invalid password"});
-        }
-
-    }catch(error){
-        res.status(500).json({messsage: "Server error", error:error.messsage});
-    }
+    res.json({ msg: "Email verified successfully!" });
+  } catch (error) {
+    res.status(500).json({ msg: "Invalid or expired token" });
+  }
 };
 
-const logout = (req,res)=>{
-    res.json({messsage:"logout successful"});
-}
+// User Login
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-const forgotPassword = async(req,res)=>{
-    try{
-        
-    }catch(error){
-        res.status(203).json({messsage:""})
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(400).json({ msg: "Invalid credentials" });
     }
-}
 
-const verifyEmail=(req,res)=>{
-    try{
-
-    }catch(error){
-
+    if (!user.isVerified) {
+      return res.status(400).json({ msg: "Please verify your email first" });
     }
-}
 
-const getUserProfile = async(req,res)=>{
-    try{
-        const User = await User.findById(req.user._id).select("-password");
-        if(user){
-            res.json(user);
-        }else{
-            res.status(404).json({messsage:" User not found" });
-        }
+    const token = generateToken(user);
+    user.tokens.push({ token });
+    await user.save();
 
-    }catch(error){
-        res.status(500).json({messsage: "Server error", error:error.messsage});
-    }
-}
+    res.json({ msg: "Login successful!", token });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
 
-export {registerUser, loginUser, logout, getUserProfile};
+// Logout
+export const logout = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.tokens = [];
+    await user.save();
+    res.json({ msg: "Logged out successfully!" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
 
+// Forgot Password
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) return res.status(400).json({ msg: "User not found" });
+
+    const token = generateToken(user);
+    const resetLink = `http://localhost:5000/api/auth/reset-password/${token}`;
+
+    await sendEmail(email, "Reset Password", `Reset link: ${resetLink}`, `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`);
+
+    res.json({ msg: "Password reset email sent!" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+// Reset Password
+export const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ msg: "Password reset successfully!" });
+  } catch (error) {
+    res.status(500).json({ msg: "Invalid or expired token" });
+  }
+};
+
+// Enable 2FA
+export const enable2FA = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  const secret = speakeasy.generateSecret({ name: "MERNAuthApp" });
+
+  user.twoFactorSecret = secret.base32;
+  user.twoFactorEnabled = true;
+  await user.save();
+
+  const qrCodeDataURL = await qrcode.toDataURL(secret.otpauth_url);
+  res.json({ qrCodeDataURL, secret: secret.base32 });
+};
+
+// Verify 2FA
+export const verify2FA = async (req, res) => {
+  const { token } = req.body;
+  const user = await User.findById(req.user.id);
+
+  const isValid = speakeasy.totp.verify({ secret: user.twoFactorSecret, encoding: "base32", token });
+
+  if (isValid) return res.json({ msg: "2FA Verified!" });
+  return res.status(400).json({ msg: "Invalid OTP" });
+};
