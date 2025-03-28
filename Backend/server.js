@@ -10,8 +10,8 @@ import walletRoutes from "./routes/walletRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
 
-
 dotenv.config();
+
 
 
 const app = express();

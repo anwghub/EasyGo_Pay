@@ -11,6 +11,33 @@ const generateToken = (user) => {
 };
 
 // User Registration
+// export const register = async (req, res) => {
+//   try {
+//     const { fullName, email, password } = req.body;
+//     let user = await User.findOne({ email });
+
+//     if (user) return res.status(400).json({ msg: "User already exists" });
+
+//     user = new User({ fullName, email, password });
+//     await user.save();
+
+//     const token = generateToken(user);
+//     const verificationLink = `http://localhost:5000/api/auth/verify/${token}`;
+
+//     await sendEmail(
+//       email,
+//       "Verify Your Email",
+//       `Click to verify: ${verificationLink}`,
+//       `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
+//     );
+
+//     res.status(201).json({ msg: "User registered! Please verify your email." });
+//   } catch (error) {
+//     res.status(500).json({ msg: "Server error" });
+//   }
+// };
+
+
 export const register = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
@@ -18,7 +45,10 @@ export const register = async (req, res) => {
 
     if (user) return res.status(400).json({ msg: "User already exists" });
 
-    user = new User({ fullName, email, password });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user = new User({ fullName, email, password: hashedPassword });
     await user.save();
 
     const token = generateToken(user);
@@ -33,9 +63,11 @@ export const register = async (req, res) => {
 
     res.status(201).json({ msg: "User registered! Please verify your email." });
   } catch (error) {
-    res.status(500).json({ msg: "Server error" });
+    console.error("Error during registration:", error);
+    res.status(500).json({ msg: "Server error", error: error.message });
   }
 };
+
 
 // Email Verification
 export const verifyEmail = async (req, res) => {
