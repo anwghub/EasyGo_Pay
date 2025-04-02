@@ -15,7 +15,7 @@ export const processPayment = async (req, res) => {
     const { amount, currency } = req.body;
 
     const options = {
-      amount: amount * 100, // Convert to smallest currency unit
+      amount: amount, // Convert to smallest currency unit
       currency: currency || "INR",
       receipt: `receipt_${Date.now()}`,
     };
@@ -32,7 +32,13 @@ export const verifyPayment = (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    const generated_signature = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ success: false, message: "Missing payment details" });
+    }
+
+    // Generate HMAC SHA256 signature
+    const generated_signature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 

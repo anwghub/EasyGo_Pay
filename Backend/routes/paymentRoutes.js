@@ -9,7 +9,6 @@ const router = express.Router();
 router.post("/pay", authMiddleware, processPayment);
 
 // Route to check payment status
-router.get("/status/:paymentId", authMiddleware, verifyPayment);
-
+router.post("/verify", authMiddleware, verifyPayment);
 export default router;
 
