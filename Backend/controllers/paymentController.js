@@ -1,36 +1,46 @@
-import Stripe from "stripe";
+import Razorpay from "razorpay";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 dotenv.config();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 // Process Payment
 export const processPayment = async (req, res) => {
   try {
-    const { amount, currency, paymentMethodId } = req.body;
+    const { amount, currency } = req.body;
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      payment_method: paymentMethodId,
-      confirmation_method: "manual",
-      confirm: true,
-    });
+    const options = {
+      amount: amount * 100, // Convert to smallest currency unit
+      currency: currency || "INR",
+      receipt: `receipt_${Date.now()}`,
+    };
 
-    res.status(200).json({ success: true, paymentIntent });
+    const order = await razorpay.orders.create(options);
+    res.status(200).json({ success: true, order });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get Payment Status
-export const getPaymentStatus = async (req, res) => {
+// Verify Payment
+export const verifyPayment = (req, res) => {
   try {
-    const { paymentId } = req.params;
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    res.status(200).json({ success: true, status: paymentIntent.status });
+    const generated_signature = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest("hex");
+
+    if (generated_signature === razorpay_signature) {
+      res.status(200).json({ success: true, message: "Payment verified successfully" });
+    } else {
+      res.status(400).json({ success: false, message: "Payment verification failed" });
+    }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

@@ -1,5 +1,5 @@
 import express from "express";
-import { processPayment, getPaymentStatus } from "../controllers/paymentController.js";
+import { processPayment, verifyPayment } from "../controllers/paymentController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
  
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/pay", authMiddleware, processPayment);
 
 // Route to check payment status
-router.get("/status/:paymentId", authMiddleware, getPaymentStatus);
+router.get("/status/:paymentId", authMiddleware, verifyPayment);
 
 export default router;
 

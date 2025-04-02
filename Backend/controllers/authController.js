@@ -11,32 +11,6 @@ const generateToken = (user) => {
 };
 
 // User Registration
-// export const register = async (req, res) => {
-//   try {
-//     const { fullName, email, password } = req.body;
-//     let user = await User.findOne({ email });
-
-//     if (user) return res.status(400).json({ msg: "User already exists" });
-
-//     user = new User({ fullName, email, password });
-//     await user.save();
-
-//     const token = generateToken(user);
-//     const verificationLink = `http://localhost:5000/api/auth/verify/${token}`;
-
-//     await sendEmail(
-//       email,
-//       "Verify Your Email",
-//       `Click to verify: ${verificationLink}`,
-//       `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
-//     );
-
-//     res.status(201).json({ msg: "User registered! Please verify your email." });
-//   } catch (error) {
-//     res.status(500).json({ msg: "Server error" });
-//   }
-// };
-
 
 export const register = async (req, res) => {
   try {
@@ -54,12 +28,18 @@ export const register = async (req, res) => {
     const token = generateToken(user);
     const verificationLink = `http://localhost:5000/api/auth/verify/${token}`;
 
-    await sendEmail(
-      email,
-      "Verify Your Email",
-      `Click to verify: ${verificationLink}`,
-      `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
-    );
+    try {
+      await sendEmail(
+        email,
+        "Verify Your Email",
+        `Click to verify: ${verificationLink}`,
+        `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`
+      );
+      console.log("Verification email sent successfully to:", email);
+    } catch (emailError) {
+      console.error("Failed to send verification email:", emailError);
+      return res.status(500).json({ msg: "Error sending verification email", error: emailError.message });
+    }
 
     res.status(201).json({ msg: "User registered! Please verify your email." });
   } catch (error) {
@@ -87,29 +67,41 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
+
 // User Login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Find user by email
     const user = await User.findOne({ email });
 
+    // Check if user exists and if password matches
     if (!user || !(await user.comparePassword(password))) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
+    // Check if email is verified
     if (!user.isVerified) {
       return res.status(400).json({ msg: "Please verify your email first" });
     }
 
+    // Generate JWT token
     const token = generateToken(user);
-    user.tokens.push({ token });
+
+    // Optionally clear previous tokens or store the new one
+    user.tokens = [{ token }];  // Reset tokens array with new token
     await user.save();
 
-    res.json({ msg: "Login successful!", token });
+    // Return response with token
+    res.json({ msg: "Login successful!", token, user: { fullName: user.fullName, email: user.email } });
+
   } catch (error) {
-    res.status(500).json({ msg: "Server error" });
+    console.error(error); // Log error for debugging
+    res.status(500).json({ msg: "Server error", error: error.message });
   }
 };
+
 
 // Logout
 export const logout = async (req, res) => {
