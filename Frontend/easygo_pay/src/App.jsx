@@ -6,6 +6,8 @@ import Dashboard from './components/Home/Dashboard.jsx';
 import Payments from './components/Others/Payments.jsx';
 import Transactions from './components/Others/Transactions.jsx';  
 import Wallet from './components/Others/Wallet.jsx';
+import SettingsScreen from './components/Others/Settings.jsx';
+import AdminDashboard from './components/Others/AdminDashboard.jsx';
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/payments" element={<Payments />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/settings" element={<SettingsScreen />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     
     );

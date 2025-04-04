@@ -8,7 +8,7 @@ const Payments = () => {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/payments/initiate", { amount });
+      const { data } = await axios.post("http://localhost:5000/api/payments/pay", { amount });
 
       const options = {
         key: "YOUR_RAZORPAY_KEY",

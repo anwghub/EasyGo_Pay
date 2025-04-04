@@ -8,7 +8,7 @@ const Transactions = () => {
     useEffect(() => {
       const fetchTransactions = async () => {
         try {
-          const { data } = await axios.get("http://localhost:5000/api/transactions");
+          const { data } = await axios.get("http://localhost:5000/api/transactions/:transactionId");
           setTransactions(data.transactions);
         } catch (error) {
           console.error("Error fetching transactions", error);
@@ -53,3 +53,4 @@ const Transactions = () => {
     );
   };
   
+export default Transactions;

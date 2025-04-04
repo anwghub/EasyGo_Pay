@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 const SettingsScreen = () => {
-  const [name, setName] = useState("Mahfuzul Islam Nabil");
-  const [email, setEmail] = useState("emailofnabil@gmail.com");
+  const [name, setName] = useState("**********");
+  const [email, setEmail] = useState("a*********@gmail.com");
   const [language, setLanguage] = useState("English");
   const [accountStatus, setAccountStatus] = useState("Active");
 
@@ -28,14 +28,14 @@ const SettingsScreen = () => {
   );
 
   return (
-    <div className="flex">
+    <div className="flex bg-black">
       {/* Sidebar */}
-      <div className="w-48 bg-gray-800 p-4">
+      <div className="w-48 bg-gray-900 p-4">
         <div className="flex items-center mb-8">
           <div className="w-8 h-8 rounded-full bg-blue-600 flex justify-center items-center">
-            <span className="text-white font-bold">O</span>
+            <span className="text-white font-bold">E</span>
           </div>
-          <span className="text-white font-bold text-lg ml-3">OnePay</span>
+          <span className="text-white font-bold text-lg ml-3">EasyGo_Pay</span>
         </div>
 
         <div className="flex flex-col">
@@ -56,7 +56,7 @@ const SettingsScreen = () => {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-white text-2xl font-bold">Settings</h1>
           <div className="flex items-center">
-            <span className="text-gray-400 mr-2">Balance:</span>
+            <span className="text-gray-500 mr-2">Balance:</span>
             <span className="text-white font-semibold mr-4">$5,382.36 USD</span>
             <button className="mr-4">
               <i className="ion-icon notifications-outline text-white text-lg" />

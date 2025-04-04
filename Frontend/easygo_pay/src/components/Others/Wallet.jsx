@@ -8,7 +8,7 @@ const Wallet = () => {
   useEffect(() => {
     const fetchWalletData = async () => {
       try {
-        const { data } = await axios.get("/api/wallet");
+        const { data } = await axios.get("http://localhost:5000/api/wallet");
         setBalance(data.balance);
         setTransactions(data.transactions);
       } catch (error) {
