@@ -9,6 +9,7 @@ import Wallet from './components/Others/Wallet.jsx';
 import SettingsScreen from './components/Others/Settings.jsx';
 import AdminDashboard from './components/Others/AdminDashboard.jsx';
 import Sidebar from './components/Others/Sidebar.jsx';
+import PasswordRecovery from './components/Auth/ForgotPassword.jsx';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/settings" element={<SettingsScreen />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/forgot-password" element={<PasswordRecovery />} />
       </Routes>
 
   );
