@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
+const cors = require("cors");
+app.use(cors()); 
+
 
 const authMiddleware = async (req, res, next) => {
   try {
