@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Sidebar } from "lucide-react";
 
 const Transactions = () => {
     const [transactions, setTransactions] = useState([]);
@@ -22,6 +23,9 @@ const Transactions = () => {
   
     return (
       <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <div className="w-58 bg-gray-900 text-white">
+          <Sidebar/>
+        </div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Transaction History</h2>
         {loading ? (
           <p className="text-center">Loading transactions...</p>

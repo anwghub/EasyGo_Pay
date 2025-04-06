@@ -18,3 +18,4 @@ router.get("/:transactionId", authMiddleware, getTransactionById);
 router.get("/wallet/:walletId", authMiddleware, getWalletTransactions);
 
 export default router;
+
