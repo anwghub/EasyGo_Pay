@@ -159,11 +159,9 @@ cd easygo-pay
 
 ###  Backend Setup
 
-```bash
 # Navigate to backend folder
 cd Backend
 
-```bash
 # Install backend dependencies
 npm install
 
@@ -173,15 +171,13 @@ MONGODB_URI=your_mongo_connection_string
 JWT_SECRET=your_secret_key
 PORT=5000
 
-```bash
 # Start the backend server
 node server.js
 
 ###  frontend Setup
-```bash
+
 cd ../Frontend/easygo_pay
 npm install
 
-```bash
 npm run dev
 
