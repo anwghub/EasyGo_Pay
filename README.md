@@ -100,51 +100,7 @@ This project aims to address these challenges by developing a comprehensive digi
   A great platform for writing code. Enhance your workflow with useful extensions for React, Tailwind, ESLint, Prettier, and more.
 ---
 
-## Folder Structure
-project-root/
-├── Backend/
-│   ├── controllers/
-│   ├── db/
-│   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   └── roleMiddleware.js
-│   ├── models/
-│   │   ├── Admin.model.js
-│   │   ├── Payment.model.js
-│   │   ├── Transaction.model.js
-│   │   ├── User.model.js
-│   │   └── Wallet.model.js
-│   ├── node_modules/
-│   ├── routes/
-│   │   ├── adminRoutes.js
-│   │   ├── authRoutes.js
-│   │   ├── paymentRoutes.js
-│   │   ├── transactionRoutes.js
-│   │   └── walletRoutes.js
-│   ├── services/
-│   │   ├── emailServices.js
-│   │   └── paymentService.js
-│   ├── .env
-│   ├── .gitignore
-│   ├── package-lock.json
-│   ├── package.json
-│   └── server.js
-│
-├── Frontend/
-│   └── easygo_pay/
-│       ├── node_modules/
-│       ├── public/
-│       ├── src/
-│       ├── .gitignore
-│       ├── eslint.config.js
-│       ├── index.html
-│       ├── package-lock.json
-│       ├── package.json
-│       ├── README.md
-│       └── vite.config.js
-│
-└── README.md
-
+project-root/ ├── Backend/ │ ├── controllers/ │ ├── db/ │ ├── middleware/ │ │ ├── authMiddleware.js │ │ └── roleMiddleware.js │ ├── models/ │ │ ├── Admin.model.js │ │ ├── Payment.model.js │ │ ├── Transaction.model.js │ │ ├── User.model.js │ │ └── Wallet.model.js │ ├── node_modules/ │ ├── routes/ │ │ ├── adminRoutes.js │ │ ├── authRoutes.js │ │ ├── paymentRoutes.js │ │ ├── transactionRoutes.js │ │ └── walletRoutes.js │ ├── services/ │ │ ├── emailServices.js │ │ └── paymentService.js │ ├── .env │ ├── .gitignore │ ├── package-lock.json │ ├── package.json │ └── server.js │ ├── Frontend/ │ └── easygo_pay/ │ ├── node_modules/ │ ├── public/ │ ├── src/ │ ├── .gitignore │ ├── eslint.config.js │ ├── index.html │ ├── package-lock.json │ ├── package.json │ ├── README.md │ └── vite.config.js │ └── README.md
 ---
 
 ---
@@ -190,6 +146,3 @@ npm install
 
 ```bash
 npm run dev
-
-### Contributor
-Anwesa Ghosh
