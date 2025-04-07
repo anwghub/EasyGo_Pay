@@ -17,9 +17,8 @@ const Sidebar = () => {
   const sidebarItems = [
     { icon: gridOutline, label: "Dashboard", path: "/" },
     { icon: swapVerticalOutline, label: "Transactions", path: "/transactions" },
-    { icon: arrowForwardOutline, label: "Transfer", path: "/transfer" },
-    { icon: cardOutline, label: "Payment", path: "/payment" },
-    { icon: cashOutline, label: "Withdraw", path: "/withdraw" },
+    { icon: cardOutline, label: "Payment", path: "/payments" },
+    { icon: cashOutline, label: "Wallet", path: "/wallet" },
     { icon: settingsOutline, label: "Settings", path: "/settings" },
     { icon: logOutOutline, label: "Log out", path: "/logout" },
   ];

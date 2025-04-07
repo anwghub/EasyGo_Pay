@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import Sidebar from "./Sidebar"; // adjust the path if needed
+import Sidebar from "./Sidebar"; // Adjust the path if needed
+import { error } from "console";
 
 const Payments = () => {
   const [amount, setAmount] = useState("");
@@ -9,32 +10,57 @@ const Payments = () => {
   const handlePayment = async () => {
     setLoading(true);
     try {
+      // Step 1: Make a request to the backend to create an order
       const { data } = await axios.post("http://localhost:5000/api/payments/pay", { amount });
 
-      const options = {
-        key: "YOUR_RAZORPAY_KEY",
-        amount: data.amount,
-        currency: "INR",
-        name: "WealthFolio",
-        description: "Payment for your transaction",
-        order_id: data.orderId,
-        handler: async function (response) {
-          await axios.post("/api/payments/verify", { ...response });
-          alert("Payment Successful!");
-        },
-        prefill: {
-          email: "user@example.com",
-          contact: "9999999999",
-        },
-      };
+      if (data.success) {
+        // Step 2: Prepare the Razorpay options
+        const options = {
+          key: "YOUR_RAZORPAY_KEY_ID", // Replace with your Razorpay key
+          amount: data.order.amount, // Ensure amount is in the smallest currency unit (paise)
+          currency: "INR", // Use INR or adjust as needed
+          name: "EasyGo_Pay",
+          description: "Payment for your transaction",
+          order_id: data.order.id, // Order ID returned from backend
+          handler: async function (response) {
+            // Step 3: Handle the Razorpay response and send to the backend for verification
+            try {
+              const verificationResponse = await axios.post("http://localhost:5000/api/payments/verify", {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
 
-      const razor = new window.Razorpay(options);
-      razor.open();
+              if (verificationResponse.data.success) {
+                alert("Payment Successful!");
+              } else {
+                console.error("Payment Verification Failed:", verificationResponse.data.message);
+                alert(`Payment Verification Failed: ${verificationResponse.data.message}`);
+                console.log(error.response.data.message); 
+              }
+            } catch (verificationError) {
+              console.error("Error during payment verification:", verificationError);
+              alert("Payment verification failed. Please try again.");
+            }
+          },
+          theme: {
+            color: "#3498db", // Customize the color of the Razorpay popup
+          },
+        };
+
+        // Step 4: Initialize Razorpay and open the payment popup
+        const razor = new window.Razorpay(options);
+        razor.open();
+      } else {
+        console.error("Payment creation failed:", data.message);
+        alert("Payment creation failed. Please try again.");
+      }
     } catch (error) {
-      console.error(error);
-      alert("Payment failed!");
+      console.error("Error during payment creation:", error);
+      alert("Payment failed! Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
