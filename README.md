@@ -154,33 +154,33 @@ This project aims to address these challenges by developing a comprehensive digi
 ---
 1. Clone git repo:
     ```bash
-  git clone https://github.com/your-username/easygo-pay.git
-  cd easygo-pay
+    git clone https://github.com/your-username/easygo-pay.git
+    cd easygo-pay
 
 2. Backend Setup
-   ```bash
-    #### Navigate to backend folder
-    cd Backend
+     ```bash
+      #### Navigate to backend folder
+      cd Backend
 
-    #### Install backend dependencies
-    npm install
+      #### Install backend dependencies
+      npm install
 
 3. Create a .env file inside the Backend/ folder with the following contents:
   #### Create a .env file and add the following:
-    ```bash
-    MONGODB_URI=your_mongo_connection_string
-    JWT_SECRET=your_secret_key
-    PORT=5000
+      ```bash
+      MONGODB_URI=your_mongo_connection_string
+      JWT_SECRET=your_secret_key
+      PORT=5000
 
 4. Start the backend server
-   ```bash
-    node server.js
+     ```bash
+      node server.js
 
 5.  frontend Setup
-    ```bash 
-    cd ../Frontend/easygo_pay  
-    npm install
-    npm run 
+      ```bash 
+      cd ../Frontend/easygo_pay  
+      npm install
+      npm run 
     
 ---
 
