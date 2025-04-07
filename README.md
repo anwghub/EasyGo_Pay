@@ -152,32 +152,37 @@ This project aims to address these challenges by developing a comprehensive digi
 - MongoDB (local or Atlas)
 
 ---
+1. Clone git repo:
+    ```bash
+  git clone https://github.com/your-username/easygo-pay.git
+  cd easygo-pay
 
-  ```bash
-git clone https://github.com/your-username/easygo-pay.git
-cd easygo-pay
+2. Backend Setup
+   ```bash
+    #### Navigate to backend folder
+    cd Backend
 
-###  Backend Setup
+    #### Install backend dependencies
+    npm install
 
-# Navigate to backend folder
-cd Backend
+3. Create a .env file inside the Backend/ folder with the following contents:
+  #### Create a .env file and add the following:
+    ```bash
+    MONGODB_URI=your_mongo_connection_string
+    JWT_SECRET=your_secret_key
+    PORT=5000
 
-# Install backend dependencies
-npm install
+4. Start the backend server
+   ```bash
+    node server.js
 
-Create a .env file inside the Backend/ folder with the following contents:
-# Create a .env file and add the following:
-MONGODB_URI=your_mongo_connection_string
-JWT_SECRET=your_secret_key
-PORT=5000
+5.  frontend Setup
+    ```bash 
+    cd ../Frontend/easygo_pay  
+    npm install
+    npm run 
+    
+---
 
-# Start the backend server
-node server.js
-
-###  frontend Setup
-
-cd ../Frontend/easygo_pay
-npm install
-
-npm run dev
-
+### Contributor
+Anwesa Ghosh
