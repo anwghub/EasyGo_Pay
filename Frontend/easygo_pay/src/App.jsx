@@ -20,13 +20,13 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path='/sidebar' element={<Sidebar />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={<Login />} /> Fallback to Login if no match
           <Route path="/payments" element={<Payments />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/settings" element={<SettingsScreen />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/forgot-password" element={<PasswordRecovery />} />
+          <Route path="*" element={<Login />} />
       </Routes>
 
   );

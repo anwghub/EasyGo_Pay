@@ -15,8 +15,9 @@ const Sidebar = () => {
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   const sidebarItems = [
-    { icon: gridOutline, label: "Dashboard", path: "/" },
+    { icon: gridOutline, label: "Dashboard", path: "/admins" },
     { icon: swapVerticalOutline, label: "Transactions", path: "/transactions" },
+
     { icon: cardOutline, label: "Payment", path: "/payments" },
     { icon: cashOutline, label: "Wallet", path: "/wallet" },
     { icon: settingsOutline, label: "Settings", path: "/settings" },

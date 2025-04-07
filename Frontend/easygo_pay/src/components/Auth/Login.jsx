@@ -30,7 +30,7 @@ const Login = () => {
         // Successful login, navigate to the dashboard or home page
         console.log("Login Successful:", result);  // For debugging
         localStorage.setItem("token", result.token);  // Store token in localStorage if needed
-        navigate("/settings");  // Redirect to transactions page
+        navigate("/settings");
       } else {
         // Handle backend validation errors
         console.log("Login Failed:", result);  // For debugging
