@@ -9,7 +9,7 @@ const Payments = () => {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post("http://localhost:5000/api/payments/pay", { amount });
+      const { data } = await axios.post(`http://localhost:5000/api/payments/pay`, { amount });
   
       if (!data.success) throw new Error("Order creation failed");
   
@@ -21,7 +21,7 @@ const Payments = () => {
         description: "Payment for your transaction",
         order_id: data.order.id,
         handler: async function (response) {
-          await axios.post("http://localhost:5000/api/payments/verify", { ...response });
+          await axios.post(`http://localhost:5000/api/payments/verify`, { ...response });
           alert("Payment Successful!");
         },
         theme: {

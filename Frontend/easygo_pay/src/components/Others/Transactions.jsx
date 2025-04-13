@@ -9,7 +9,8 @@ const Transactions = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/transactions/:transactionId");
+        const walletId = "MY_WALLET_ID";
+        const { data } = await axios.get(`http://localhost:5000/api/transactions//wallet/:walletId`);
         setTransactions(data.transactions);
       } catch (error) {
         console.error("Error fetching transactions", error);
@@ -49,7 +50,7 @@ const Transactions = () => {
                   <tbody>
                     {transactions.map((tx) => (
                       <tr key={tx._id} className="text-center">
-                        <td className="border p-4">{new Date(tx.date).toLocaleDateString()}</td>
+                        <td className="border p-4">{new Date(tx.createdAt).toLocaleDateString()}</td>
                         <td className="border p-4 text-green-600">₹{tx.amount}</td>
                         <td className={`border p-4 ${tx.status === "Completed" ? "text-green-600" : "text-red-600"}`}>
                           {tx.status}
