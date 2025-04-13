@@ -10,29 +10,35 @@ const Payments = () => {
     setLoading(true);
     try {
       const { data } = await axios.post("http://localhost:5000/api/payments/pay", { amount });
-
+  
+      if (!data.success) throw new Error("Order creation failed");
+  
       const options = {
-        key: "YOUR_RAZORPAY_KEY",
-        amount: data.amount,
-        currency: "INR",
+        key: "rzp_test_gBU7a2ZumfxQhS",
+        amount: data.order.amount,
+        currency: data.order.currency,
         name: "EasyGo_Pay",
         description: "Payment for your transaction",
-        order_id: data.orderId,
+        order_id: data.order.id,
         handler: async function (response) {
           await axios.post("http://localhost:5000/api/payments/verify", { ...response });
           alert("Payment Successful!");
         },
-
+        theme: {
+          color: "#3399cc"
+        }
       };
-
+  
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
       console.error(error);
-      alert("Payment failed!", error.message);
+      alert("Payment failed! " + error.message);
+      
     }
     setLoading(false);
   };
+  
 
   return (
     <div className="flex h-screen bg-gray-100">

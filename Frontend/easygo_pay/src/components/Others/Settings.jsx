@@ -20,16 +20,12 @@ const SettingsScreen = () => {
   );
 
   return (
-    <div className="flex bg-gray-900 min-h-screen">
+    <div className="flex bg-gray-800 min-h-screen">
       {/* Sidebar */}
-      <div className="w-56 bg-gray-800 p-5">
-        <div className="flex items-center mb-8">
-          <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-            <span className="text-white font-bold">E</span>
-          </div>
-          <span className="text-white font-bold text-xl ml-3">EasyGo_Pay</span>
-        </div>
-        <Sidebar />
+      <div className="w-56 bg-gray-800">
+        <div className="flex items-center">
+          <Sidebar />
+        </div>        
       </div>
 
       {/* Main Content */}

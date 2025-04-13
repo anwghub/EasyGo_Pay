@@ -21,14 +21,15 @@ const Wallet = () => {
   }, []);
 
   return (
-    <div className="flex bg-gray-900 min-h-screen">
-      {/* Sidebar */}
-      <div className="w-56 bg-gray-800 p-5 max-w-3xl mx-auto">
-        <Sidebar />
+    <div className="flex bg-gray-800 min-h-screen">
+      <div className="w-56 bg-gray-800">
+        <div className="flex items-center">
+          <Sidebar />
+        </div>        
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 max-w-5xl mx-auto">
+      <div className="flex-1 p-6 max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-white text-3xl font-bold">Wallet</h1>
           <div className="flex items-center">

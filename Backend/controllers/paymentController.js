@@ -15,7 +15,7 @@ export const processPayment = async (req, res) => {
     const { amount, currency } = req.body;
 
     const options = {
-      amount: amount, // Convert to smallest currency unit
+      amount: Number(amount) * 100,// Convert to paise
       currency: currency || "INR",
       receipt: `receipt_${Date.now()}`,
     };

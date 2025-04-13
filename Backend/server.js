@@ -22,6 +22,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
+//frontend url
+app.use(cors({
+    origin: "http://localhost:3000",  // your frontend's URL
+    credentials: true
+  }));
+  
 app.get("/",(req,res)=>{
     res.send("Hello World");
 });
